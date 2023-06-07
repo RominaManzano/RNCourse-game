@@ -1,9 +1,11 @@
 import { View, Text } from 'react-native';
 
-const PrimaryButton = () => (
+const PrimaryButton = ({
+  children,
+}) => (
   <View>
     <Text>
-      Primary Button
+      {children}
     </Text>
   </View>
 );
