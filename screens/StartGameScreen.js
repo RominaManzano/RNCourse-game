@@ -1,24 +1,63 @@
-import { TextInput, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { TextInput, View, StyleSheet, Alert } from 'react-native';
+
 import PrimaryButton from '../components/PrimaryButton';
 
-const StartGameScreen = () => (
-  <View style={styles.inputContainer}>
-    <TextInput
-      style={styles.numberInput}
-      maxLength={2}
-      keyboardType="number-pad"
-    />
+const StartGameScreen = () => {
+  const [enteredNumber, setEnteredNumber] = useState('');
 
-    <View style={styles.buttonsContainer}>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton>Reset</PrimaryButton>
-      </View>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton>Confirm</PrimaryButton>
+  const handleNumberInput = (enteredText) => {
+    setEnteredNumber(enteredText);
+  };
+
+  const handleReset = () => {
+    setEnteredNumber('');
+  };
+
+  const handleConfirm = () => {
+    const chosenNumber = parseInt(enteredNumber);
+
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        'Invalid number!',
+        'The entered value has to be a number between 1 and 99',
+        [{
+          text: 'OK',
+          style: 'destructive',
+          onPress: handleReset,
+        }],
+      );
+      return;
+    }
+
+    console.log('VALID NUMBER');
+  };
+
+  return (
+    <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.numberInput}
+        maxLength={2}
+        keyboardType="number-pad"
+        onChangeText={handleNumberInput}
+        value={enteredNumber}
+      />
+
+      <View style={styles.buttonsContainer}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={handleReset}>
+            Reset
+          </PrimaryButton>
+        </View>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={handleConfirm}>
+            Confirm
+          </PrimaryButton>
+        </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default StartGameScreen;
 
@@ -31,12 +70,8 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#3B021F',
     borderRadius: 8,
-
-    // shadow on android
-    elevation: 4,
-
-    // shadow on iOS
-    shadowColor: 'black',
+    elevation: 4, // shadow on android
+    shadowColor: 'black', // shadow on iOS
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.25,

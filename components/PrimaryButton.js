@@ -7,29 +7,24 @@ import {
 
 const PrimaryButton = ({
   children,
-}) => {
-  const handlePress = () => {
-    console.log('PRESSED');
-  };
-
-  return (
-    <View style={styles.buttonOuterContainer}>
-      <Pressable
-        onPress={handlePress}
-        android_ripple={{ color: '#640233' }}
-        style={({ pressed }) =>
-          pressed
-            ? [styles.buttonInnerContainer, styles.pressed]
-            : styles.buttonInnerContainer
-        }
-      >
-        <Text style={styles.buttonText}>
-          {children}
-        </Text>
-      </Pressable>
-    </View>
-  );
-};
+  onPress,
+}) => (
+  <View style={styles.buttonOuterContainer}>
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: '#640233' }}
+      style={({ pressed }) =>
+        pressed
+          ? [styles.buttonInnerContainer, styles.pressed]
+          : styles.buttonInnerContainer
+      }
+    >
+      <Text style={styles.buttonText}>
+        {children}
+      </Text>
+    </Pressable>
+  </View>
+);
 
 export default PrimaryButton;
 
