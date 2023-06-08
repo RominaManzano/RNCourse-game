@@ -13,7 +13,9 @@ const App = () => {
     setUserNumber(pickedNumber);
   };
 
-  const screen = userNumber ? <GameScreen /> : <StartGameScreen onPickNumber={handlePickNumber} />;
+  const screen = userNumber
+    ? <GameScreen userNumber={userNumber} />
+    : <StartGameScreen onPickNumber={handlePickNumber} />;
 
   return (
     <LinearGradient
