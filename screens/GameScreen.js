@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, Text, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Card from '../components/ui/Card';
+import GuessLogItem from '../components/game/GuessLogItem';
 import InstructionText from '../components/ui/InstructionText';
 import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -24,10 +25,11 @@ let maxBoundary = 100;
 const GameScreen = ({ userNumber, onGameOver }) => {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
 
@@ -57,7 +59,10 @@ const GameScreen = ({ userNumber, onGameOver }) => {
 
     const newGuess = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
     setCurrentGuess(newGuess);
+    setGuessRounds(previousGuessRounds => [newGuess, ...previousGuessRounds]);
   };
+
+  const guessRoundsListLenght = guessRounds.length;
 
   return (
     <View style={styles.screen}>
@@ -84,8 +89,17 @@ const GameScreen = ({ userNumber, onGameOver }) => {
         </View>
       </Card>
 
-      <View>
-        {/* LOG ROUNDS */}
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessRounds}
+          renderItem={({ item, index }) => (
+            <GuessLogItem
+              roundNumber={guessRoundsListLenght - index}
+              guess={item}
+            />
+          )}
+          keyExtractor={(item) => item}
+        />
       </View>
     </View>
   );
@@ -106,5 +120,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
   },
 });
