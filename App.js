@@ -12,6 +12,7 @@ import StartGameScreen from './screens/StartGameScreen';
 const App = () => {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRounds, setGuessRounds] = useState(0);
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -27,6 +28,11 @@ const App = () => {
     setGameIsOver(true);
   };
 
+  const handleStartNewGame = () => {
+    setUserNumber(null);
+    setGuessRounds(0);
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
@@ -35,7 +41,13 @@ const App = () => {
 
   if (userNumber) screen = <GameScreen userNumber={userNumber} onGameOver={handleGameOver} />;
 
-  if (gameIsOver && userNumber) screen = <GameOverScreen />
+  if (gameIsOver && userNumber) screen = (
+    <GameOverScreen
+      roundsNumber={guessRounds}
+      userNumber={userNumber}
+      onStartNewGame={handleStartNewGame}
+    />
+  );
 
   return (
     <LinearGradient
