@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   TextInput,
   useWindowDimensions,
@@ -18,7 +20,7 @@ const StartGameScreen = ({
 }) => {
   const [enteredNumber, setEnteredNumber] = useState('');
 
-  const { width, height } = useWindowDimensions();
+  const { height } = useWindowDimensions();
 
   const handleNumberInput = (enteredText) => {
     setEnteredNumber(enteredText);
@@ -50,42 +52,49 @@ const StartGameScreen = ({
   const marginTopDistance = height < 380 ? 30 : 100;
 
   return (
-    <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
-      <Title>Guess My Number</Title>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+          <Title>Guess My Number</Title>
 
-      <Card>
-        <InstructionText>
-          Enter a number
-        </InstructionText>
+          <Card>
+            <InstructionText>
+              Enter a number
+            </InstructionText>
 
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          onChangeText={handleNumberInput}
-          value={enteredNumber}
-        />
+            <TextInput
+              style={styles.numberInput}
+              maxLength={2}
+              keyboardType="number-pad"
+              onChangeText={handleNumberInput}
+              value={enteredNumber}
+            />
 
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={handleReset}>
-              Reset
-            </PrimaryButton>
-          </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={handleConfirm}>
-              Confirm
-            </PrimaryButton>
-          </View>
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={handleReset}>
+                  Reset
+                </PrimaryButton>
+              </View>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={handleConfirm}>
+                  Confirm
+                </PrimaryButton>
+              </View>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     alignItems: 'center',
