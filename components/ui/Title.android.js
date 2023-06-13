@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from 'react-native';
+import { Platform, Text, StyleSheet } from 'react-native';
 
 const Title = ({ children }) => (
   <Text style={styles.title}>
